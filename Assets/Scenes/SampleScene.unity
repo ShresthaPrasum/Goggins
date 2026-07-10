@@ -6041,15 +6041,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ac6719181ab2d7489fa7da95a5beb8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  gravity: 1.5
-  maxGravityMultiplier: 2.2
-  velocity: {x: 0, y: 0}
-  maxXVelocity: 20
-  maxAcceleration: 6
-  acceleration: 4
-  distance: 0
-  jumpVelocity: 7
-  isGrounded: 0
+  startXSpeed: 6
+  maxXSpeed: 13
+  xAcceleration: 0.05
+  jumpForce: 12
+  gravityScale: 4
   groundCheck: {fileID: 582378890}
   groundLayer:
     serializedVersion: 2
@@ -8072,6 +8068,14 @@ PrefabInstance:
     - target: {fileID: 1248788440060885685, guid: 55fed4f1f2471c74db87311e74f28b7d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3026816751845897700, guid: 55fed4f1f2471c74db87311e74f28b7d, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 6.0254445
+      objectReference: {fileID: 0}
+    - target: {fileID: 3026816751845897700, guid: 55fed4f1f2471c74db87311e74f28b7d, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 0.48979798
       objectReference: {fileID: 0}
     - target: {fileID: 4623742964683677128, guid: 55fed4f1f2471c74db87311e74f28b7d, type: 3}
       propertyPath: m_Name

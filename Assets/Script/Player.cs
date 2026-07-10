@@ -1,101 +1,119 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
-    public float gravity;
-    public float maxGravityMultiplier = 2.2f;
-    public Vector2 velocity;
-    public float maxXVelocity = 100;
-    public float maxAcceleration = 10;
-    public float acceleration = 10;
-    public float distance = 0;
-    public float jumpVelocity = 20;
-    public bool isGrounded = false;
+	public float startXSpeed = 4f;
+	public float maxXSpeed = 12f;
+	public float xAcceleration = 6f;
+	public float jumpForce = 12f;
+	public float gravityScale = 4f;
+	public Transform groundCheck;
+	public LayerMask groundLayer;
+	public float groundCheckRadius = 0.15f;
 
-    [Header("Ground Check")]
-    public Transform groundCheck;
-    public LayerMask groundLayer;
-    public float groundCheckRadius = 0.15f;
+	Rigidbody2D rb;
+	Collider2D playerCollider;
+	PhysicsMaterial2D noFrictionMaterial;
+	float currentXSpeed;
+	bool jumpQueued;
 
-    bool jumpRequested;
+	void Awake()
+	{
+		rb = GetComponent<Rigidbody2D>();
+		playerCollider = GetComponent<Collider2D>();
+	}
 
-    void Update()
-    {
-        Keyboard keyboard = Keyboard.current;
-        if (keyboard != null)
-        {
-            if (keyboard.spaceKey.wasPressedThisFrame)
-            {
-                jumpRequested = true;
-            }
-        }
-    }
+	void Start()
+	{
+		currentXSpeed = startXSpeed;
+		rb.gravityScale = gravityScale;
 
-    private void FixedUpdate()
-    {
-        Vector2 pos = transform.position;
-        bool groundedNow = IsGrounded();
+		rb.freezeRotation = true;
 
-        if (jumpRequested && groundedNow)
-        {
-            velocity.y = jumpVelocity;
-            groundedNow = false;
-            isGrounded = false;
-            jumpRequested = false;
-        }
-        else if (groundedNow)
-        {
-            velocity.y = 0f;
-            isGrounded = true;
-        }
-        else
-        {
-            isGrounded = false;
-        }
+		rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
-        if (!groundedNow)
-        {
-            float speedRatio = Mathf.Clamp01(velocity.x / Mathf.Max(0.01f, maxXVelocity));
-            float gravityMultiplier = Mathf.Lerp(1f, maxGravityMultiplier, speedRatio);
-            float effectiveGravity = gravity * gravityMultiplier;
 
-            pos.y += velocity.y * Time.fixedDeltaTime;
-            velocity.y += effectiveGravity * Time.fixedDeltaTime;
-        }
 
-        distance += velocity.x * Time.fixedDeltaTime;
+		if (playerCollider != null)
+		{
+			noFrictionMaterial = new PhysicsMaterial2D("PlayerNoFriction");
 
-        pos.x += velocity.x * Time.fixedDeltaTime;
+			noFrictionMaterial.friction = 0f;
 
-        if (isGrounded)
-        {
-            float velocityRatio = velocity.x / maxXVelocity;
-            acceleration = maxAcceleration * (1 - Mathf.Clamp01(velocityRatio));
+			noFrictionMaterial.bounciness = 0f;
 
-            velocity.x += acceleration * Time.fixedDeltaTime;
-            if (velocity.x >= maxXVelocity)
-            {
-                velocity.x = maxXVelocity;
-            }
-        }
+			playerCollider.sharedMaterial = noFrictionMaterial;
+		}
+	}
 
-        jumpRequested = false;
+	void Update()
 
-        transform.position = pos;
-    }
+	{
+		Keyboard keyboard = Keyboard.current;
 
-    bool IsGrounded()
-    {
-        if (groundCheck != null)
-        {
-            return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer) != null;
-        }
+		if (keyboard != null && keyboard.spaceKey.wasPressedThisFrame)
+		{
+			jumpQueued = true;
 
-        // Fallback for old scenes if groundCheck is not assigned yet.
-        return transform.position.y <= 0f;
-    }
+		}
+		else if (keyboard == null && Input.GetKeyDown(KeyCode.Space))
+		{
+			jumpQueued = true;
+		}
+	}
 
+	void FixedUpdate()
+
+	{
+		bool grounded = IsGrounded();
+
+		
+		currentXSpeed = Mathf.MoveTowards(currentXSpeed, maxXSpeed, xAcceleration * Time.fixedDeltaTime);
+
+		Vector2 velocity = rb.linearVelocity;
+		velocity.x = currentXSpeed;
+
+		
+		if (jumpQueued && grounded)
+		{
+
+			velocity.y =  jumpForce;
+			jumpQueued = false;
+		}
+
+		
+		if (grounded && velocity.y < 0f)
+		{
+			    velocity.y = 0f;
+		}
+
+		
+		if (Mathf.Abs(rb.linearVelocity.x) < 0.01f && currentXSpeed > 0f)
+		{
+			    velocity.x = Mathf.Min(velocity.x, rb.linearVelocity.x + 0.1f);
+		}
+
+		rb.linearVelocity = velocity;
+
+		
+		if (grounded)
+		{
+
+			jumpQueued = false;
+		}
+	}
+
+	bool IsGrounded()
+	{
+		if (groundCheck == null)
+
+		{
+			return false;
+
+		}
+
+		return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer) != null;
+	}
 }
