@@ -59,11 +59,13 @@ public class Player : MonoBehaviour
 		if (keyboard != null && keyboard.spaceKey.wasPressedThisFrame)
 		{
 			jumpQueued = true;
+			Debug.Log("Player just pressed the space key");
 
 		}
 		else if (keyboard == null && Input.GetKeyDown(KeyCode.Space))
 		{
 			jumpQueued = true;
+			Debug.Log("Player just pressed the space key");
 		}
 	}
 
@@ -81,7 +83,7 @@ public class Player : MonoBehaviour
 		
 		if (jumpQueued && grounded)
 		{
-			animator.SetBool("Jump", true);
+
 			velocity.y =  jumpForce;
 			jumpQueued = false;
 		}
@@ -89,7 +91,6 @@ public class Player : MonoBehaviour
 		
 		if (grounded && velocity.y < 0f)
 		{
-				animator.SetBool("Jump", false);
 			    velocity.y = 0f;
 		}
 
@@ -101,7 +102,7 @@ public class Player : MonoBehaviour
 
 		rb.linearVelocity = velocity;
 
-		
+		animator.SetBool("Jump", !grounded);
 		if (grounded)
 		{
 

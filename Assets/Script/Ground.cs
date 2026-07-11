@@ -20,6 +20,10 @@ public class InfiniteGenerator : MonoBehaviour
 
     public float maxGapBetweenBuildings = 6f;
 
+    public float firstGapBetweenBuildings = 0f;
+
+    public float firstBuildingOffsetX = 0f;
+
     public float baseGroundY = 0f;
 
     public float minHeightDifference = -2f;
@@ -32,8 +36,11 @@ public class InfiniteGenerator : MonoBehaviour
 
     public Vector3 firstBuildingPosition = Vector3.zero;
 
+    public LayerMask groundLayer;
+
     private float lastBuildingRightEdge;
     private float lastBuildingY;
+    private bool firstPostStartBuildingSpawned;
 
     private readonly List<GameObject> spawnedBuildings = new List<GameObject>();
 
@@ -84,10 +91,10 @@ public class InfiniteGenerator : MonoBehaviour
 
         if (width <= 0.01f)
         {
-            width = 10f;
+            width = 4f;
         }
 
-        float firstX = firstBuildingPosition.x;
+        float firstX = firstBuildingPosition.x + firstBuildingOffsetX;
         float firstY = firstBuildingPosition.y;
 
         building.transform.position = new Vector3(firstX, firstY, firstBuildingPosition.z);
@@ -107,10 +114,17 @@ public class InfiniteGenerator : MonoBehaviour
 
         if(width<= 0.01f)
         {
-            width = 10f;
+            width = 4f;
         }
 
-        float gap = Random.Range(minGapBetweenBuildings, maxGapBetweenBuildings);
+        float gap = firstPostStartBuildingSpawned
+            ? Random.Range(minGapBetweenBuildings, maxGapBetweenBuildings)
+            : firstGapBetweenBuildings;
+
+        if (!firstPostStartBuildingSpawned)
+        {
+            gap = Mathf.Min(gap, 0f);
+        }
 
         float newX = lastBuildingRightEdge + gap + (width*0.5f);
 
@@ -123,6 +137,7 @@ public class InfiniteGenerator : MonoBehaviour
         lastBuildingRightEdge = newX + (width * 0.5f);
 
         lastBuildingY = newY;
+        firstPostStartBuildingSpawned = true;
         
         spawnedBuildings.Add(building);
         
@@ -130,19 +145,16 @@ public class InfiniteGenerator : MonoBehaviour
 
     float GetBuildingWidth(GameObject building)
     {
-        Renderer renderer = building.GetComponentInChildren<Renderer>();
+        Collider2D[] colliders = building.GetComponentsInChildren<Collider2D>();
 
-        if(renderer!= null)
+        for (int i = 0; i < colliders.Length; i++)
         {
-            return renderer.bounds.size.x;
-        }
+            Collider2D collider2D = colliders[i];
 
-        Collider2D collider2D = building.GetComponentInChildren<Collider2D>();
-
-        if(collider2D != null)
-        {
-            return collider2D.bounds.size.x;
-
+            if (collider2D != null && ((1 << collider2D.gameObject.layer) & groundLayer.value) != 0)
+            {
+                return collider2D.bounds.size.x;
+            }
         }
         return 0f;
     }
