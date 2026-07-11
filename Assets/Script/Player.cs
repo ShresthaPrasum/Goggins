@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
 	public LayerMask groundLayer;
 	public float groundCheckRadius = 0.15f;
 
+	public Animator animator;
+
 	Rigidbody2D rb;
 	Collider2D playerCollider;
 	PhysicsMaterial2D noFrictionMaterial;
@@ -23,6 +25,7 @@ public class Player : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody2D>();
 		playerCollider = GetComponent<Collider2D>();
+		animator = GetComponent<Animator>();
 	}
 
 	void Start()
@@ -78,7 +81,7 @@ public class Player : MonoBehaviour
 		
 		if (jumpQueued && grounded)
 		{
-
+			animator.SetBool("Jump", true);
 			velocity.y =  jumpForce;
 			jumpQueued = false;
 		}
@@ -86,6 +89,7 @@ public class Player : MonoBehaviour
 		
 		if (grounded && velocity.y < 0f)
 		{
+				animator.SetBool("Jump", false);
 			    velocity.y = 0f;
 		}
 

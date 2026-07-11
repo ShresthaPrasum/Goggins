@@ -127,10 +127,10 @@ TextureImporter:
         serializedVersion: 2
         x: 4
         y: 14
-        width: 219
+        width: 194
         height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -147,12 +147,12 @@ TextureImporter:
       name: jet_1
       rect:
         serializedVersion: 2
-        x: 220
-        y: 68
-        width: 28
-        height: 11
+        x: 4
+        y: 14
+        width: 213
+        height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -169,12 +169,12 @@ TextureImporter:
       name: jet_2
       rect:
         serializedVersion: 2
-        x: 222
-        y: 49
-        width: 9
-        height: 10
+        x: 4
+        y: 14
+        width: 229
+        height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -191,12 +191,12 @@ TextureImporter:
       name: jet_3
       rect:
         serializedVersion: 2
-        x: 231
-        y: 50
-        width: 16
-        height: 9
+        x: 4
+        y: 14
+        width: 242
+        height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -209,11 +209,33 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: jet_4
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 14
+        width: 177
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8b4c1608b09bfe44879f0616c52a64f
+      internalID: 1117139385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: b297ac7a276a4d94586f5d8427d5d27b
     internalID: 0
     vertices: []
     indices: 
@@ -227,6 +249,7 @@ TextureImporter:
       jet_1: 6728049835586104576
       jet_2: 821794005654389309
       jet_3: 6061237555438052790
+      jet_4: 1117139385
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
