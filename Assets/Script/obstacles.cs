@@ -28,7 +28,7 @@ public class Obstacles : MonoBehaviour
             Player playerScript = collision.gameObject.GetComponent<Player>();
             if (playerScript != null)
             {
-                playerScript.currentXSpeed -= 2f; 
+                playerScript.currentXSpeed -= 1f; 
             }
             
             if (obstacleRb != null)
@@ -36,10 +36,10 @@ public class Obstacles : MonoBehaviour
                 obstacleRb.linearVelocity = new Vector2(0f, 5f);
             }
          
-            if (obstacleCollider != null)
-            {
-                obstacleCollider.enabled = false;
-            }
+            // if (obstacleCollider != null)
+            // {
+            //     obstacleCollider.enabled = false;
+            // }
         }
     }
 }
