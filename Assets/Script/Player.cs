@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
 	Rigidbody2D rb;
 	Collider2D playerCollider;
 	PhysicsMaterial2D noFrictionMaterial;
-	float currentXSpeed;
+	public float currentXSpeed;
 	bool jumpQueued;
 
 	void Awake()
