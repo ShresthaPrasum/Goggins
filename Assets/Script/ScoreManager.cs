@@ -13,7 +13,7 @@ public class ScoreManager : MonoBehaviour
     public float scorePerUnit = 1f;
 
     float startX;
-    int currentScore;
+    public int currentScore;
 
     void Start()
     {

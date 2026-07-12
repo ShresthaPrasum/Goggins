@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
 	Collider2D playerCollider;
 	PhysicsMaterial2D noFrictionMaterial;
 	public float currentXSpeed;
+
+	public GameObject deathScreen;
 	bool jumpQueued;
 
 	void Awake()
@@ -120,5 +122,18 @@ public class Player : MonoBehaviour
 		}
 
 		return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer) != null;
+	}
+
+	public void Die()
+	{
+		if (deathScreen != null)
+        {
+            deathScreen.SetActive(true);		
+			DeathUI deathUi = deathScreen.GetComponentInChildren<DeathUI>(true);
+			if (deathUi != null)
+			{
+				deathUi.ShowScore();
+			}
+        }
 	}
 }
