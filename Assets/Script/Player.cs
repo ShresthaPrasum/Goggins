@@ -129,11 +129,8 @@ public class Player : MonoBehaviour
 		if (deathScreen != null)
         {
             deathScreen.SetActive(true);		
-			DeathUI deathUi = deathScreen.GetComponentInChildren<DeathUI>(true);
-			if (deathUi != null)
-			{
-				deathUi.ShowScore();
-			}
+			DeathUI deathUi = deathScreen.GetComponent<DeathUI>();	
+			deathUi.ShowScore();
         }
 	}
 }

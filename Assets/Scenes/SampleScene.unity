@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 33659570}
   - component: {fileID: 33659569}
+  - component: {fileID: 33659571}
   m_Layer: 0
   m_Name: Killer
   m_TagString: Untagged
@@ -191,12 +192,24 @@ Transform:
   m_GameObject: {fileID: 33659568}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.67215, y: 7.53143, z: 0}
+  m_LocalPosition: {x: -6.67215, y: -2.97, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &33659571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33659568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7183824776275df49b9dbb22e8cf846b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::killer
 --- !u!1 &128871318
 GameObject:
   m_ObjectHideFlags: 0
@@ -2845,6 +2858,7 @@ GameObject:
   - component: {fileID: 948193179}
   - component: {fileID: 948193181}
   - component: {fileID: 948193180}
+  - component: {fileID: 948193182}
   m_Layer: 5
   m_Name: DeathUi
   m_TagString: Untagged
@@ -2915,6 +2929,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 948193178}
   m_CullTransparentMesh: 1
+--- !u!114 &948193182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948193178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9300436d659ebb428c07dc1748428b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeathUI
+  scoreManager: {fileID: 958339958}
+  scoreText: {fileID: 995114005}
 --- !u!1 &958339955
 GameObject:
   m_ObjectHideFlags: 0
@@ -2968,6 +2996,7 @@ MonoBehaviour:
   player: {fileID: 1633668168}
   scoreText: {fileID: 958339958}
   scorePerUnit: 1
+  currentScore: 0
 --- !u!114 &958339958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3254,8 +3283,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 134, y: -507}
-  m_SizeDelta: {x: 1756.98, y: 908}
+  m_AnchoredPosition: {x: 134, y: -508.47}
+  m_SizeDelta: {x: 1756.98, y: 905.06}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1012429141
 MonoBehaviour:
@@ -4807,6 +4836,7 @@ MonoBehaviour:
   groundCheckRadius: 0.15
   animator: {fileID: 1633668172}
   currentXSpeed: 0
+  deathScreen: {fileID: 948193178}
 --- !u!1 &1705395765
 GameObject:
   m_ObjectHideFlags: 0
