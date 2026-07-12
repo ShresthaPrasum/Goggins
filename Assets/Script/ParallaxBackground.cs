@@ -7,7 +7,7 @@ public class BackgroundController : MonoBehaviour
 
     private float startPos, length;
     public GameObject cam;
-    public float parallaxEffect; // The speed at which the bg should move relative to the camera
+    public float parallaxEffect;
 
     void Start()
     {

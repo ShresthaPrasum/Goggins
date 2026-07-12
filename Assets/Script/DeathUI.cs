@@ -1,5 +1,7 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 
 public class DeathUI : MonoBehaviour
@@ -22,5 +24,19 @@ public class DeathUI : MonoBehaviour
             }
         }
     }
+
+    void Update()
+    {
+        if (Keyboard.current.spaceKey.wasPressedThisFrame|| Keyboard.current.rKey.wasPressedThisFrame)
+        {
+            RestartGame();
+        }
+    }
+
+    public void RestartGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
+
     
 }

@@ -10,7 +10,8 @@ public class InfiniteGenerator : MonoBehaviour
 
     [Header("Custom Initial Spawn Positions")]
     public Vector3 firstBuildingPosition = Vector3.zero;
-    public Vector3 secondBuildingPosition = new Vector3(12f, -1f, 0f); // Choose exactly where the 2nd building goes
+    [Tooltip("Set the exact X coordinate where the 2nd building should spawn.")]
+    public float secondBuildingXPosition = 12f; 
 
     [Header("Endless Generation Settings")]
     public float spawnAheadDistance = 40f;
@@ -19,10 +20,10 @@ public class InfiniteGenerator : MonoBehaviour
     public float maxGapBetweenBuildings = 6f;
 
     [Header("Height Variation Settings")]
-    public float minHeightDifference = -2f;
-    public float maxHeightDifference = 2f;
-    public float minBuildingY = -3f;
-    public float maxBuildingY = 8f;
+    public float minHeightDifference = -2f; 
+    public float maxHeightDifference = 2f;  
+    public float minBuildingY = -3f;         
+    public float maxBuildingY = 8f;          
 
     [Header("Physics Setup")]
     public LayerMask groundLayer;
@@ -38,19 +39,15 @@ public class InfiniteGenerator : MonoBehaviour
         {
             mainCamera = Camera.main;
         }
-
-        // 1. Spawn the absolute starter building
+        
         SpawnStarterBuilding();
-
-        // 2. Spawn the second building at your custom chosen position
         SpawnSecondBuilding();
     }
 
     void Update()
     {
         if (player == null || buildingPrefabs == null || buildingPrefabs.Length == 0) return;
-
-        // Automatically handles filling up the horizon ahead of the player dynamically
+        
         float farthestNeed = player.position.x + spawnAheadDistance;
         while (lastBuildingRightEdge < farthestNeed)
         {
@@ -68,8 +65,7 @@ public class InfiniteGenerator : MonoBehaviour
         float width = GetBuildingWidth(building);
 
         building.transform.position = firstBuildingPosition;
-
-        // Track edges based on custom placement
+        
         lastBuildingRightEdge = firstBuildingPosition.x + (width * 0.5f);
         lastBuildingY = firstBuildingPosition.y;
 
@@ -77,59 +73,71 @@ public class InfiniteGenerator : MonoBehaviour
     }
 
     void SpawnSecondBuilding()
+{
+    if (buildingPrefabs == null || buildingPrefabs.Length < 2) return;
+
+    GameObject prefab = GetRandomBuildingPrefab(1);
+    GameObject building = Instantiate(prefab);
+    float width = GetBuildingWidth(building);
+
+    
+    float heightDelta = Random.Range(minHeightDifference, maxHeightDifference);
+    float newY = lastBuildingY + heightDelta;
+
+    
+    if (newY > maxBuildingY)
     {
-        if (buildingPrefabs == null || buildingPrefabs.Length < 2) return;
-
-        // Pulls from your remaining pool of random building types
-        GameObject prefab = GetRandomBuildingPrefab(1);
-        GameObject building = Instantiate(prefab);
-        float width = GetBuildingWidth(building);
-
-        // Snap directly to your chosen custom second position
-        building.transform.position = secondBuildingPosition;
-
-        // Overwrite tracking pointers to scale perfectly off this new custom location
-        lastBuildingRightEdge = secondBuildingPosition.x + (width * 0.5f);
-        lastBuildingY = secondBuildingPosition.y;
-
-        spawnedBuildings.Add(building);
+        newY = lastBuildingY - Mathf.Abs(heightDelta);
+    }
+    
+    else if (newY < minBuildingY)
+    {
+        newY = lastBuildingY + Mathf.Abs(heightDelta);
     }
 
-    void SpawnNormalBuilding(float gap)
+    building.transform.position = new Vector3(secondBuildingXPosition, newY, 0f);
+    
+    lastBuildingRightEdge = secondBuildingXPosition + (width * 0.5f);
+    lastBuildingY = newY;
+
+    spawnedBuildings.Add(building);
+}
+
+void SpawnNormalBuilding(float gap)
+{
+    GameObject prefab = GetRandomBuildingPrefab(1);
+    GameObject building = Instantiate(prefab);
+    float width = GetBuildingWidth(building);
+    
+    float newX = lastBuildingRightEdge + gap + (width * 0.5f);
+
+    
+    float heightDelta = Random.Range(minHeightDifference, maxHeightDifference);
+    float newY = lastBuildingY + heightDelta;
+
+    
+    if (newY > maxBuildingY)
     {
-        GameObject prefab = GetRandomBuildingPrefab(1);
-        GameObject building = Instantiate(prefab);
-        float width = GetBuildingWidth(building);
-
-        // Normal procedural generation math continues here flawlessly
-        float newX = lastBuildingRightEdge + gap + (width * 0.5f);
-        float heightDelta = Random.Range(minHeightDifference, maxHeightDifference);
-        float newY = Mathf.Clamp(lastBuildingY + heightDelta, minBuildingY, maxBuildingY);
-
-        building.transform.position = new Vector3(newX, newY, 0f);
-
-        lastBuildingRightEdge = newX + (width * 0.5f);
-        lastBuildingY = newY;
-        
-        spawnedBuildings.Add(building);
+        newY = lastBuildingY - Mathf.Abs(heightDelta); 
     }
+    else if (newY < minBuildingY)
+    {
+        newY = lastBuildingY + Mathf.Abs(heightDelta); 
+    }
+
+    building.transform.position = new Vector3(newX, newY, 0f);
+
+    lastBuildingRightEdge = newX + (width * 0.5f);
+    lastBuildingY = newY;
+    
+    spawnedBuildings.Add(building);
+}
 
     GameObject GetRandomBuildingPrefab(int minIndex)
     {
-        if (buildingPrefabs == null || buildingPrefabs.Length == 0)
-        {
-            return null;
-        }
-
-        if (minIndex < 0)
-        {
-            minIndex = 0;
-        }
-
-        if (minIndex >= buildingPrefabs.Length)
-        {
-            minIndex = buildingPrefabs.Length - 1;
-        }
+        if (buildingPrefabs == null || buildingPrefabs.Length == 0) return null;
+        if (minIndex < 0) minIndex = 0;
+        if (minIndex >= buildingPrefabs.Length) minIndex = buildingPrefabs.Length - 1;
 
         if (buildingPrefabs.Length - minIndex <= 1)
         {
@@ -138,7 +146,6 @@ public class InfiniteGenerator : MonoBehaviour
         }
 
         int prefabIndex = Random.Range(minIndex, buildingPrefabs.Length);
-
         if (prefabIndex == lastSpawnedPrefabIndex)
         {
             prefabIndex++;
@@ -163,7 +170,7 @@ public class InfiniteGenerator : MonoBehaviour
                 return col.bounds.size.x;
             }
         }
-        return 4f; // Clean fallback width if no matching collider layer is found
+        return 4f; 
     }
 
     void DestroyBuildingsBehindPlayer()
@@ -180,14 +187,10 @@ public class InfiniteGenerator : MonoBehaviour
         {
             leftEdge = player.position.x - destroyingBehindBuildingDistance;
         }
-
-        // OPTIMIZED: Since buildings are spawned in order, the oldest is ALWAYS index 0.
-        // We check index 0. If it needs to be deleted, we wipe it out and loop. 
-        // The instant index 0 is close enough to be kept, we break the loop early.
+        
         while (spawnedBuildings.Count > 0)
         {
             GameObject building = spawnedBuildings[0];
-
             if (building == null)
             {
                 spawnedBuildings.RemoveAt(0);
@@ -204,7 +207,7 @@ public class InfiniteGenerator : MonoBehaviour
             }
             else
             {
-                break; // Stop processing! If the oldest is safe, everything else ahead of it is safe too.
+                break; 
             }
         }
     } 
