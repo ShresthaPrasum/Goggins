@@ -13,6 +13,8 @@ public class InfiniteGenerator : MonoBehaviour
     [Tooltip("Set the exact X coordinate where the 2nd building should spawn.")]
     public float secondBuildingXPosition = 12f; 
 
+    public float secondBuildingYPosition = 0f;
+
     [Header("Endless Generation Settings")]
     public float spawnAheadDistance = 40f;
     public float destroyingBehindBuildingDistance = 20f;
@@ -67,7 +69,7 @@ public class InfiniteGenerator : MonoBehaviour
         building.transform.position = firstBuildingPosition;
         
         lastBuildingRightEdge = firstBuildingPosition.x + (width * 0.5f);
-        lastBuildingY = firstBuildingPosition.y;
+        lastBuildingY = firstBuildingPosition.y - secondBuildingYPosition;;
 
         spawnedBuildings.Add(building);
     }

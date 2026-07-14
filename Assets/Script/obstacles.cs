@@ -24,7 +24,7 @@ public class Obstacles : MonoBehaviour
         {
             
             Player playerScript = collision.gameObject.GetComponent<Player>();
-            if (playerScript != null && playerScript.currentXSpeed > 7f) 
+            if (playerScript != null && playerScript.currentXSpeed > 4f) 
             {
                 playerScript.currentXSpeed -= 1f; 
             }
