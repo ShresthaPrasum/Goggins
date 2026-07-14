@@ -2,6 +2,9 @@
 
 ## A 2D Platform endless running game where the player is trying to escape by jumping from building to building from the aliens that have captured the city!
 
+# Theme
+## ENDLESS
+
 # Description
 ## Endless running and jumping game that has well-polished mechanics and assets ready to play with a single space bar. A player is trying to escape by jumping from building to building from aliens that have captured the city.
 
