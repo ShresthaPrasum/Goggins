@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
 	public float groundCheckRadius = 0.15f;
 
 	public Animator animator;
+	public AudioSource jumpSource;
+	public AudioSource runSource;
 
 	Rigidbody2D rb;
 	Collider2D playerCollider;
@@ -25,6 +27,8 @@ public class Player : MonoBehaviour
 
 	void Awake()
 	{
+		
+
 		rb = GetComponent<Rigidbody2D>();
 		playerCollider = GetComponent<Collider2D>();
 		animator = GetComponent<Animator>();
@@ -53,6 +57,18 @@ public class Player : MonoBehaviour
 		}
 	}
 
+	public void PlayJumpSound()
+	{
+		jumpSource.PlayOneShot(jumpSource.clip);
+	}
+
+	public void PlayRunSound()
+	{	
+		if(IsGrounded())
+		{
+			runSource.PlayOneShot(runSource.clip);
+		}
+	}
 	void Update()
 
 	{
@@ -75,20 +91,20 @@ public class Player : MonoBehaviour
 
 	{
 		bool grounded = IsGrounded();
-
 		
 		currentXSpeed = Mathf.MoveTowards(currentXSpeed, maxXSpeed, xAcceleration * Time.fixedDeltaTime);
-
 		Vector2 velocity = rb.linearVelocity;
 		velocity.x = currentXSpeed;
 
 		
 		if (jumpQueued && grounded)
 		{
-
+			PlayJumpSound();
+			runSource.Stop();
 			velocity.y =  jumpForce;
 			jumpQueued = false;
 		}
+		
 
 		
 		if (grounded && velocity.y < 0f)
